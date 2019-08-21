@@ -4,29 +4,29 @@ from firebase_admin import firestore
 from firebase_admin import auth
 from flask import jsonify, Flask
 import os
-# from pyrebase import pyrebase
-# import secret
+from pyrebase import pyrebase
+import secret
 
 app = Flask(__name__)
 
+SECRET_KEY = os.getenv("FIREBASE_API_KEY")
 
-@app.route('/')
-def index():
-    SECRET_KEY = os.getenv("FIREBASE_API_KEY")
-    return jsonify({"message": SECRET_KEY})
+# @app.route('/')
+# def index():
+#     return jsonify({"message": SECRET_KEY})
 
 
 # Auth -  getting user idToken
-# config = {
-#     "apiKey": secret.SECRET_KEY,
-#     "authDomain": "flask-auth-84403.firebaseapp.com",
-#     "databaseURL": "https://flask-auth-84403.firebaseio.com/",
-#     "storageBucket": "flask-auth-84403.appspot.com",
-#     "projectId": "flask-auth-84403"
-# }
+config = {
+    "apiKey": secret.SECRET_KEY,
+    "authDomain": "flask-auth-84403.firebaseapp.com",
+    "databaseURL": "https://flask-auth-84403.firebaseio.com/",
+    "storageBucket": "flask-auth-84403.appspot.com",
+    "projectId": "flask-auth-84403"
+}
 
-# firebase = pyrebase.initialize_app(config)
-# pyreAuth = firebase.auth()
+firebase = pyrebase.initialize_app(config)
+pyreAuth = firebase.auth()
 
 
 # @app.route('/user/login', methods=['GET', 'POST'])
