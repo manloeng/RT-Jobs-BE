@@ -1,0 +1,52 @@
+[
+    {
+      "businessName": "Allen Ltd",
+      "businessAddress": "Studio 81I\nFreeman common\nPort Liamton\nTQ2M 0HJ",
+      "businessEmail": "bradshawfrancis@patel.com"
+    },
+    {
+      "businessName": "Barnett and Sons",
+      "businessAddress": "06 Leonard orchard\nLake Malcolm\nM84 2WT",
+      "businessEmail": "tellis@lyons.com"
+    },
+    {
+      "businessName": "Bartlett LLC",
+      "businessAddress": "44 Sutton burgs\nMayport\nE8E 1RN",
+      "businessEmail": "wendy44@griffin.com"
+    },
+    {
+      "businessName": "Smith LLC",
+      "businessAddress": "Flat 24\nSmart cove\nAntonyberg\nSK51 5PZ",
+      "businessEmail": "iain88@powell-frost.com"
+    },
+    {
+      "businessName": "Hunter, Chamberlain and Hall",
+      "businessAddress": "Studio 59\nJoe park\nNorth Grahamview\nS62 6AG",
+      "businessEmail": "adrian11@payne-phillips.biz"
+    },
+    {
+      "businessName": "Coleman, Davies and Smith",
+      "businessAddress": "2 Kerry meadow\nPort Joelmouth\nE2 5AJ",
+      "businessEmail": "gjohnson@walker.info"
+    },
+    {
+      "businessName": "Clarke, Smith and Gray",
+      "businessAddress": "870 Cross rue\nPickeringstad\nEC0 4SA",
+      "businessEmail": "dominiccooper@whittaker.com"
+    },
+    {
+      "businessName": "Lloyd LLC",
+      "businessAddress": "233 Lambert heights\nWest Gemmaton\nCB0B 0WD",
+      "businessEmail": "christiancooper@williamson.org"
+    },
+    {
+      "businessName": "Miles, Harrison and Hutchinson",
+      "businessAddress": "Flat 0\nGordon ridge\nJuliamouth\nB0 4BY",
+      "businessEmail": "victor83@warner.com"
+    },
+    {
+      "businessName": "Lucas, Pearce and Kelly",
+      "businessAddress": "5 Jessica ports\nClarkstad\nG2 0WL",
+      "businessEmail": "lsmith@ali.biz"
+    }
+  ]
