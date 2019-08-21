@@ -1,11 +1,17 @@
-from flask import Flask, jsonify
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+from firebase_admin import auth
+from flask import *
+from pyrebase import pyrebase
+import secret
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return jsonify({"message": "messgae goes here"})
+# @app.route('/')
+# def index():
+#     return jsonify({"message": "messgae goes here"})
 
 
 # Auth -  getting user idToken
@@ -84,14 +90,14 @@ def businessprofile():
     return render_template('loggedIn.html')
 
 
-# Admin SDK - setting up for admin privileges
+# # Admin SDK - setting up for admin privileges
 cred = credentials.Certificate("firebase-private-key.json")
 default_app = firebase_admin.initialize_app(cred)
 # print(default_app)
 db = firestore.client()
 
 
-# adds user
+# # adds user
 @app.route('/user/signup', methods=['GET', 'POST'])
 def usersignup():
     # need to use dynamic information from the frontend submission
@@ -122,7 +128,7 @@ def usersignup():
     return render_template('signup.html')
 
 
-# adding business
+# # adding business
 @app.route('/business/signup', methods=['GET', 'POST'])
 def businesssignup():
     # need to use dynamic information from the frontend submission
@@ -155,7 +161,7 @@ def businesssignup():
 # fetches data from db with a where clause
 @app.route('/', methods=['GET'])
 def user_data():
-    users_ref = db.collection(u'users').where(u'first', u'==', 'Ada')
+    users_ref = db.collection(u'users')
     docs = users_ref.stream()
 
     for doc in docs:
