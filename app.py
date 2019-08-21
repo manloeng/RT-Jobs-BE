@@ -11,14 +11,15 @@ app = Flask(__name__)
 
 SECRET_KEY = os.getenv("FIREBASE_API_KEY")
 
-# @app.route('/')
-# def index():
-#     return jsonify({"message": SECRET_KEY})
+
+@app.route('/')
+def index():
+    return jsonify({"message": SECRET_KEY})
 
 
 # Auth -  getting user idToken
 config = {
-    "apiKey": secret.SECRET_KEY,
+    "apiKey": SECRET_KEY,
     "authDomain": "flask-auth-84403.firebaseapp.com",
     "databaseURL": "https://flask-auth-84403.firebaseio.com/",
     "storageBucket": "flask-auth-84403.appspot.com",
