@@ -21,7 +21,6 @@ def index():
 #     "databaseURL": "https://flask-auth-84403.firebaseio.com/",
 #     "storageBucket": "flask-auth-84403.appspot.com",
 #     "projectId": "flask-auth-84403"
-
 # }
 
 # firebase = pyrebase.initialize_app(config)
