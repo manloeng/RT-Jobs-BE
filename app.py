@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
-from flask import *
+from flask import jsonify, Flask
 # from pyrebase import pyrebase
 # import secret
 
