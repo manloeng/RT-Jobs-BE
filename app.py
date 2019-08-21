@@ -3,15 +3,15 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
 from flask import *
-from pyrebase import pyrebase
-import secret
+# from pyrebase import pyrebase
+# import secret
 
 app = Flask(__name__)
 
 
-# @app.route('/')
-# def index():
-#     return jsonify({"message": "messgae goes here"})
+@app.route('/')
+def index():
+    return jsonify({"message": "messgae goes here"})
 
 
 # Auth -  getting user idToken
@@ -93,9 +93,9 @@ app = Flask(__name__)
 # # # Admin SDK - setting up for admin privileges
 # print(default_app)
 
-default_app = firebase_admin.initialize_app()
-print(default_app.name)
-db = firestore.client()
+# default_app = firebase_admin.initialize_app()
+# print(default_app.name)
+# db = firestore.client()
 
 
 # # # adds user
@@ -160,14 +160,14 @@ db = firestore.client()
 
 
 # fetches data from db with a where clause
-@app.route('/', methods=['GET'])
-def user_data():
-    users_ref = db.collection(u'users')
-    docs = users_ref.stream()
+# @app.route('/', methods=['GET'])
+# def user_data():
+#     users_ref = db.collection(u'users')
+#     docs = users_ref.stream()
 
-    for doc in docs:
-        print(u'{} => {}'.format(doc.id, doc.to_dict()))
-        return jsonify(doc.id, doc.to_dict())
+#     for doc in docs:
+#         print(u'{} => {}'.format(doc.id, doc.to_dict()))
+#         return jsonify(doc.id, doc.to_dict())
 
 
 if __name__ == '__main__':
