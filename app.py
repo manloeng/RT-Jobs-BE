@@ -3,15 +3,17 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
 from flask import jsonify, Flask
+import os
 # from pyrebase import pyrebase
 # import secret
 
 app = Flask(__name__)
 
 
-# @app.route('/')
-# def index():
-#     return jsonify({"message": "messgae goes here"})
+@app.route('/')
+def index():
+    SECRET_KEY = os.getenv("FIREBASE_API_KEY")
+    return jsonify({"message": SECRET_KEY})
 
 
 # Auth -  getting user idToken
@@ -107,16 +109,16 @@ db = firestore.client()
 #         # could add name from req form
 #         try:
 #             # creates a new user in firebase (under the hood)
-#             user = auth.create_user(
-#                 email=email,
-#                 password=password,
-#                 # display_name='John Doe',
-#             )
-#             # then logs in
-#             checkauth = pyreAuth.sign_in_with_email_and_password(
-#                 email, password)
-#             # print(checkauth, "<-----")
-#             localId = checkauth['localId']
+#         #     user = auth.create_user(
+#         #         email=email,
+#         #         password=password,
+#         #         # display_name='John Doe',
+#         #     )
+#         #     # then logs in
+#         #     checkauth = pyreAuth.sign_in_with_email_and_password(
+#         #         email, password)
+#         #     # print(checkauth, "<-----")
+#         #     localId = checkauth['localId']
 #             # adds data into our data when user signs up and set up its own user obj
 #             # needs to be more accept a range of data
 #             doc_ref = db.collection(u'users').document(localId)
@@ -159,14 +161,14 @@ db = firestore.client()
 
 
 # fetches data from db with a where clause
-@app.route('/', methods=['GET'])
-def user_data():
-    users_ref = db.collection(u'users')
-    docs = users_ref.stream()
+# @app.route('/', methods=['GET'])
+# def user_data():
+#     users_ref = db.collection(u'users')
+#     docs = users_ref.stream()
 
-    for doc in docs:
-        print(u'{} => {}'.format(doc.id, doc.to_dict()))
-        return jsonify(doc.id, doc.to_dict())
+#     for doc in docs:
+#         print(u'{} => {}'.format(doc.id, doc.to_dict()))
+#         return jsonify(doc.id, doc.to_dict())
 
 
 if __name__ == '__main__':
