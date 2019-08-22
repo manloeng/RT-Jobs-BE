@@ -120,28 +120,27 @@ def usersignup():
         print(email)
         print(password)
         # could add name from req form
-        try:
-            # creates a new user in firebase (under the hood)
-            user = auth.create_user(
-                email=email,
-                password=password,
-                display_name=display_name,
-            )
-            # then logs in
-            checkauth = pyreAuth.sign_in_with_email_and_password(
-                email, password)
-            print(checkauth, "<-----")
-            localId = checkauth['localId']
-#             # adds data into our data when user signs up and set up its own user obj
-#             # needs to be more accept a range of data
-            doc_ref = db.collection(u'users').document(localId)
-            doc_ref.set({u'email': email, u'name': display_name,
-                         u'avatar_url': 'https://placekitten.com/474/821'})
-        except auth.AuthError as exc:
-            print(exc.code)
-            print(exc.error)
-            # return jsonify({'messsage': ex})
-        return jsonify(email=email, display_name=display_name, localId=localId)
+#         try:
+#             # creates a new user in firebase (under the hood)
+#             user = auth.create_user(
+#                 email=email,
+#                 password=password,
+#                 display_name=display_name,
+#             )
+#             # then logs in
+#             checkauth = pyreAuth.sign_in_with_email_and_password(
+#                 email, password)
+#             print(checkauth, "<-----")
+#             localId = checkauth['localId']
+# #             # adds data into our data when user signs up and set up its own user obj
+# #             # needs to be more accept a range of data
+#             doc_ref = db.collection(u'users').document(localId)
+#             doc_ref.set({u'email': email, u'name': display_name,
+#                          u'avatar_url': 'https://placekitten.com/474/821'})
+        # except auth.AuthError as exc:
+        #     print(exc.code)
+        # return jsonify({'messsage': ex})
+        return jsonify(email=email, display_name=display_name)
 
 
 # # # adding business
