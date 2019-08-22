@@ -2,10 +2,10 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
-from flask import jsonify, Flask
+from flask import jsonify, Flask, request, render_template
 import os
 from pyrebase import pyrebase
-import secret
+# import secret
 
 app = Flask(__name__)
 
@@ -21,27 +21,27 @@ config = {
     "projectId": "flask-auth-84403",
 }
 
-# firebase = pyrebase.initialize_app(config)
+firebase = pyrebase.initialize_app(config)
 
-# pyreAuth = firebase.auth()
+pyreAuth = firebase.auth()
 
 
 @app.route('/')
 def index():
-    return jsonify({"message": SECRET_KEY})
+    return jsonify({"message": config})
 
 
-# @app.route('/user/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
-#         id_token = checkauth['idToken']
-#         verify(id_token)
-#         if verify(id_token) == "user":
-#             return redirect('/user/profile')
-#     return render_template('login.html')
+@app.route('/user/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
+        id_token = checkauth['idToken']
+        verify(id_token)
+        if verify(id_token) == "user":
+            return redirect('/user/profile')
+    return render_template('login.html')
 
 
 # @app.route('/business/login', methods=['GET', 'POST'])
