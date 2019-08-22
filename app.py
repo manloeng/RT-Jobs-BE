@@ -46,7 +46,7 @@ def login():
         verify(id_token)
         if verify(id_token) == "user":
             return jsonify(localId=localId, email=email, display_name=display_name)
-        return jsonify(id_token)
+        return jsonify({"message": "not valid"})
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
 
@@ -144,33 +144,39 @@ def usersignup():
 
 
 # # # adding business
-# @app.route('/business/signup', methods=['GET', 'POST'])
-# def businesssignup():
-#     # need to use dynamic information from the frontend submission
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         name = request.form['name']
-#         try:
-#             # creates a new user in firebase (under the hood)
-#             user = auth.create_user(
-#                 email=email,
-#                 password=password,
-#                 display_name=name,
-#             )
-#             # then logs in
-#             checkauth = pyreAuth.sign_in_with_email_and_password(
-#                 email, password)
-#             # print(checkauth, "<-----")
-#             localId = checkauth['localId']
-#             # adds data into our data when user signs up and set up its own user obj
-#             # needs to be more accept a range of data
-#             doc_ref = db.collection(u'business').document(localId)
-#             doc_ref.set({u'email': email, u'name': name})
-#         except:
-#             # should print firebase error
-#             return jsonify({'messsage': "error"})
-#     return render_template('businessSignup.html')
+@app.route('/business/signup', methods=['GET', 'POST'])
+def businesssignup():
+    #     # need to use dynamic information from the frontend submission
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        display_name = data['display_name']
+        print(email)
+        print(password)
+        try:
+            # creates a new user in firebase (under the hood)
+            user = auth.create_user(
+                email=email,
+                password=password,
+                display_name=display_name,
+            )
+    #             # then logs in
+            checkauth = pyreAuth.sign_in_with_email_and_password(
+                email, password)
+            print(checkauth, "<-----")
+            localId = checkauth['localId']
+        # adds data into our data when user signs up and set up its own user obj
+        # needs to be more accept a range of data
+            doc_ref = db.collection(u'business').document(localId)
+            doc_ref.set({u'businessEmail': email,
+                         u'businessName': display_name})
+        except:
+            # should print firebase error
+            return jsonify({'messsage': "error"})
+        return jsonify(localId=localId, email=email, BusinessName=display_name)
+    if request.method == 'GET':
+        return jsonify({"message": "please post a user tot his endpoint"})
 
 
 # fetches data from db with a where clause
