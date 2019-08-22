@@ -38,15 +38,15 @@ def login():
         data = request.get_json(force=True)
         email = data['email']
         password = data['password']
-#         print(email)
-#         print(password)
-#         # checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
-#         # print(checkauth)
-#         # id_token = checkauth['idToken']
-#         # verify(id_token)
-#         # if verify(id_token) == "user":
-#         # return redirect('/user/profile')
-        return jsonify(data)
+        checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
+        print(checkauth)
+        id_token = checkauth['idToken']
+        localId = checkauth['localId']
+        display_name = checkauth['displayName']
+        verify(id_token)
+        if verify(id_token) == "user":
+            return jsonify(localId=localId, email=email, display_name=display_name)
+        return jsonify(id_token)
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
 
@@ -64,24 +64,24 @@ def login():
 #     return render_template('businessLogin.html')
 
 
-# def verify(id_token):
-#     decoded_token = auth.verify_id_token(id_token)
-#     uid = decoded_token['uid']
-#     print(uid)
-#     # check if user/ business
-#     users_ref = db.collection(u'users')
-#     userData = users_ref.stream()
-#     for user in userData:
-#         if uid in user.id:
-#             print('user logged in')
-#             return "user"
+def verify(id_token):
+    decoded_token = auth.verify_id_token(id_token)
+    uid = decoded_token['uid']
+    print(uid)
+    # check if user/ business
+    users_ref = db.collection(u'users')
+    userData = users_ref.stream()
+    for user in userData:
+        if uid in user.id:
+            print('user logged in')
+            return "user"
 
-#     business_ref = db.collection(u'business')
-#     businessData = business_ref.stream()
-#     for business in businessData:
-#         if uid in business.id:
-#             print('business logged in')
-#             return "business"
+    business_ref = db.collection(u'business')
+    businessData = business_ref.stream()
+    for business in businessData:
+        if uid in business.id:
+            print('business logged in')
+            return "business"
 
 
 # @app.route('/user/profile', methods=['GET', 'POST'])
@@ -101,7 +101,7 @@ def login():
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -139,6 +139,8 @@ def usersignup():
         except:
             return jsonify("an error has occured")
         return jsonify(localId=localId, email=email, display_name=display_name)
+        if request.method == 'GET':
+            return jsonify({"message": "please post a user tot his endpoint"})
 
 
 # # # adding business
