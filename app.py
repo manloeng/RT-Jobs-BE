@@ -111,13 +111,13 @@ db = firestore.client()
 @app.route('/user/signup', methods=['GET', 'POST'])
 def usersignup():
     # need to use dynamic information from the frontend submission
-    # if request.method == 'POST':
-    #     data = request.get_json(force=True)
-    #     email = data['email']
-    #     password = data['password']
-    #     display_name = data['display_name']
-    #     print(email)
-    #     print(password)
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        display_name = data['display_name']
+        print(email)
+        print(password)
         # could add name from req form
     #         try:
     #             # creates a new user in firebase (under the hood)
