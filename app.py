@@ -3,6 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
 from flask import jsonify, Flask, request, render_template
+import json
 import os
 from pyrebase import pyrebase
 # import secret
@@ -34,14 +35,18 @@ def index():
 @app.route('/user/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
-        id_token = checkauth['idToken']
-        verify(id_token)
-        if verify(id_token) == "user":
-            return redirect('/user/profile')
-    return render_template('login.html')
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        print(email)
+        print(password)
+        # checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
+        # print(checkauth)
+        # id_token = checkauth['idToken']
+        # verify(id_token)
+        # if verify(id_token) == "user":
+        # return redirect('/user/profile')
+        return jsonify(data)
 
 
 # @app.route('/business/login', methods=['GET', 'POST'])
@@ -94,7 +99,7 @@ def login():
 
 
 # # # Admin SDK - setting up for admin privileges
-# print(default_app)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 print(default_app.name)
@@ -102,34 +107,39 @@ db = firestore.client()
 
 
 # # # adds user
-# @app.route('/user/signup', methods=['GET', 'POST'])
-# def usersignup():
-#     # need to use dynamic information from the frontend submission
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         # could add name from req form
-#         try:
-#             # creates a new user in firebase (under the hood)
-#         #     user = auth.create_user(
-#         #         email=email,
-#         #         password=password,
-#         #         # display_name='John Doe',
-#         #     )
-#         #     # then logs in
-#         #     checkauth = pyreAuth.sign_in_with_email_and_password(
-#         #         email, password)
-#         #     # print(checkauth, "<-----")
-#         #     localId = checkauth['localId']
+@app.route('/user/signup', methods=['GET', 'POST'])
+def usersignup():
+    # need to use dynamic information from the frontend submission
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        display_name = data['display_name']
+        print(email)
+        print(password)
+        # could add name from req form
+        try:
+            # creates a new user in firebase (under the hood)
+            user = auth.create_user(
+                email=email,
+                password=password,
+                display_name=display_name,
+            )
+            # then logs in
+            checkauth = pyreAuth.sign_in_with_email_and_password(
+                email, password)
+            print(checkauth, "<-----")
+            localId = checkauth['localId']
 #             # adds data into our data when user signs up and set up its own user obj
 #             # needs to be more accept a range of data
-#             doc_ref = db.collection(u'users').document(localId)
-#             doc_ref.set({u'email': email, u'name': '',
-#                          u'avatar_url': 'https://placekitten.com/474/821'})
-#         except:
-#             # should print firebase error
-#             return jsonify({'messsage': "error"})
-#     return render_template('signup.html')
+            doc_ref = db.collection(u'users').document(localId)
+            doc_ref.set({u'email': email, u'name': display_name,
+                         u'avatar_url': 'https://placekitten.com/474/821'})
+        except auth.AuthError as exc:
+            print(exc.code)
+            print(exc.error)
+            # return jsonify({'messsage': ex})
+        return jsonify(email=email, display_name=display_name, localId=localId)
 
 
 # # # adding business
