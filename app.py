@@ -51,17 +51,23 @@ def login():
         return jsonify({"message": "please post a user tot his endpoint"})
 
 
-# @app.route('/business/login', methods=['GET', 'POST'])
-# def businesslogin():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
-#         id_token = checkauth['idToken']
-#         verify(id_token)
-#         if verify(id_token) == "business":
-#             return redirect('/business/profile')
-#     return render_template('businessLogin.html')
+@app.route('/business/login', methods=['GET', 'POST'])
+def businesslogin():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
+        id_token = checkauth['idToken']
+        id_token = checkauth['idToken']
+        localId = checkauth['localId']
+        display_name = checkauth['displayName']
+        verify(id_token)
+        if verify(id_token) == "business":
+            return jsonify(localId=localId, businessEmail=email, buinessName=display_name)
+        return jsonify({"message": "not valid"})
+    if request.method == 'GET':
+        return jsonify({"message": "please post a user tot his endpoint"})
 
 
 def verify(id_token):
@@ -101,7 +107,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -174,7 +180,7 @@ def businesssignup():
         except:
             # should print firebase error
             return jsonify({'messsage': "error"})
-        return jsonify(localId=localId, email=email, BusinessName=display_name)
+        return jsonify(localId=localId, BusinessEmail=email, BusinessName=display_name)
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
 
