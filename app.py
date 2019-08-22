@@ -32,12 +32,12 @@ def index():
     return jsonify({"message": config})
 
 
-# @app.route('/user/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.get_json(force=True)
-#         email = data['email']
-#         password = data['password']
+@app.route('/user/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
 #         print(email)
 #         print(password)
 #         # checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
@@ -46,7 +46,7 @@ def index():
 #         # verify(id_token)
 #         # if verify(id_token) == "user":
 #         # return redirect('/user/profile')
-#         return jsonify(data)
+        return jsonify(data)
 
 
 # @app.route('/business/login', methods=['GET', 'POST'])
