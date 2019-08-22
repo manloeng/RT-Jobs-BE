@@ -119,13 +119,13 @@ def usersignup():
         print(email)
         print(password)
         # could add name from req form
-    #         try:
-    #             # creates a new user in firebase (under the hood)
-    #             user = auth.create_user(
-    #                 email=email,
-    #                 password=password,
-    #                 display_name=display_name,
-    #             )
+        try:
+                # creates a new user in firebase (under the hood)
+                user = auth.create_user(
+                    email=email,
+                    password=password,
+                    display_name=display_name,
+                )
     #             # then logs in
     #             checkauth = pyreAuth.sign_in_with_email_and_password(
     #                 email, password)
