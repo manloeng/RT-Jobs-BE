@@ -120,12 +120,12 @@ def usersignup():
         print(password)
         # could add name from req form
         try:
-                # creates a new user in firebase (under the hood)
-                user = auth.create_user(
-                    email=email,
-                    password=password,
-                    display_name=display_name,
-                )
+            # creates a new user in firebase (under the hood)
+            user = auth.create_user(
+                email=email,
+                password=password,
+                display_name=display_name,
+            )
     #             # then logs in
     #             checkauth = pyreAuth.sign_in_with_email_and_password(
     #                 email, password)
@@ -136,10 +136,9 @@ def usersignup():
     #             doc_ref = db.collection(u'users').document(localId)
     #             doc_ref.set({u'email': email, u'name': display_name,
     #                          u'avatar_url': 'https://placekitten.com/474/821'})
-        # except auth.AuthError as exc:
-        #     print(exc.code)
-        # return jsonify({'messsage': ex})
-    return jsonify({"messeage": "message"})
+        except:
+            return jsonify("an error has occured")
+        return jsonify({"messeage": "message"})
 
 
 # # # adding business
