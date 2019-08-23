@@ -57,29 +57,29 @@ def login():
         return jsonify({"message": "please post a user tot his endpoint"})
 
 
-# @app.route('/business/login', methods=['GET', 'POST'])
-# def businesslogin():
-#     if request.method == 'POST':
-#         data = request.get_json(force=True)
-#         email = data['email']
-#         password = data['password']
-#         checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
-#         id_token = checkauth['idToken']
-#         id_token = checkauth['idToken']
-#         localId = checkauth['localId']
-#         display_name = checkauth['displayName']
-#         verify(id_token)
-#         if verify(id_token) == "business":
-#             # details = {}
-#             # details["email"] = email
-#             # details["display_name"] = display_name
-#             # details["localId"] = localId
-#             # business = {}
-#             # business["business"] = details
-#             return jsonify({"message": "not valid"})
-#         return jsonify({"message": "not valid"})
-#     if request.method == 'GET':
-#         return jsonify({"message": "please post a user tot his endpoint"})
+@app.route('/business/login', methods=['GET', 'POST'])
+def businesslogin():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        email = data['email']
+        password = data['password']
+        checkauth = pyreAuth.sign_in_with_email_and_password(email, password)
+        id_token = checkauth['idToken']
+        id_token = checkauth['idToken']
+        localId = checkauth['localId']
+        display_name = checkauth['displayName']
+        verify(id_token)
+        if verify(id_token) == "business":
+            details = {}
+            details["email"] = email
+            details["display_name"] = display_name
+            details["localId"] = localId
+            business = {}
+            business["business"] = details
+            return jsonify(business)
+        return jsonify({"message": "not valid"})
+    if request.method == 'GET':
+        return jsonify({"message": "please post a user tot his endpoint"})
 
 
 def verify(id_token):
