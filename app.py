@@ -243,21 +243,19 @@ def handleJobs():
 def handleApplications():
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
-        # if data['b_uid'] and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
-        #     created_at = datetime_ref.now()
-        #     confirmation = "null"
-        #     data["created_at"] = created_at
-        #     data["confirmation"] = confirmation
+        if data['b_uid'] and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
+            created_at = datetime_ref.now()
+            confirmation = "null"
+            data["created_at"] = created_at
+            data["confirmation"] = confirmation
 
-        #     db.collection(u'applications').add(data)
-        #     # return jsonify(data)
-        #     docs = db.collection(u'applications').where(
-        #         u'created_at', u'==', created_at).stream()
-        #     appDic = {}
-        #     for doc in docs:
-        #         appDic[doc.id] = doc.to_dict()
-        #     return jsonify(appDic)
+            db.collection(u'applications').add(data)
+            docs = db.collection(u'applications').where(
+                u'created_at', u'==', created_at).stream()
+            appDic = {}
+            for doc in docs:
+                appDic[doc.id] = doc.to_dict()
+            return jsonify(appDic)
     else:
         # docs = db.collection(u'Applications').where(
         #     u'business_id', '==', business_id).where(u'job_id', u'==', job_id).stream()
