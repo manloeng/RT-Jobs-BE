@@ -226,7 +226,9 @@ def handleJobs():
                 u'created_by', u'==', data['created_by']).stream()
             jobDic = {}
             for doc in docs:
-                jobDic[doc.id] = doc.to_dict()
+                doc_content = doc.to_dict()
+                jobDic["job"] = doc_content
+                doc_content["job_id"] = doc.id
             return jsonify(jobDic)
 
     else:
