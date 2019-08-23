@@ -1,0 +1,5 @@
+venv
+.env
+app
+firebase-private-key.json
+.idea

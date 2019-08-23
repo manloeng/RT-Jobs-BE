@@ -1,0 +1,63 @@
+{
+  "GET /api": {
+    "description": "serves up a json representation of all the available endpoints of the api"
+  },
+  "POST /api/user/signup": {
+    "description": "serves a user on succesful signup",
+    "RequestBody": {
+      "display_name": "My Name",
+      "email": "test@test.co.uk",
+      "password": "password"
+    },
+    "exampleResponse": {
+      "user": {
+        "display_name": "My Name",
+        "email": "test@test.co.uk",
+        "localId": "lkSO3KaKqbaO9XfnhkTOYZpSdp23"
+      }
+    }
+  },
+  "POST /api/user/login": {
+    "description": "serves a user on succesful login",
+    "RequestBody": {
+      "email": "test@test.co.uk",
+      "password": "password"
+    },
+    "exampleResponse": {
+      "user": {
+        "display_name": "My Name",
+        "email": "test@test.co.uk",
+        "localId": "lkSO3KaKqbaO9XfnhkTOYZpSdp23"
+      }
+    }
+  },
+  "POST /api/business/signup": {
+    "description": "serves a business on succesful signup",
+    "RequestBody": {
+      "display_name": "My Name",
+      "email": "test@test.co.uk",
+      "password": "password"
+    },
+    "exampleResponse": {
+      "business": {
+        "display_name": "My Name",
+        "email": "test@test.co.uk",
+        "localId": "lkSO3KaKqbaO9XfnhkTOYZpSdp23"
+      }
+    }
+  },
+  "POST /api/business/login": {
+    "description": "serves a business on succesful login",
+    "RequestBody": {
+      "display_name": "My Name",
+      "email": "test@test.co.uk"
+    },
+    "exampleResponse": {
+      "business": {
+        "display_name": "My Name",
+        "email": "test@test.co.uk",
+        "localId": "lkSO3KaKqbaO9XfnhkTOYZpSdp23"
+      }
+    }
+  }
+}
