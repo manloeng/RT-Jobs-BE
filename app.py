@@ -121,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
