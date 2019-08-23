@@ -250,6 +250,9 @@ def handleApplications():
             data["confirmation"] = confirmation
 
             db.collection(u'applications').add(data)
+            job_ref = db.collection(u'jobs').document(data["job_id"])
+            job_ref.update(
+                {u'applicants': firestore.ArrayUnion([data["u_uid"]])})
             docs = db.collection(u'applications').where(
                 u'created_at', u'==', created_at).stream()
             appDic = {}
