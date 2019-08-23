@@ -218,6 +218,8 @@ def handleJobs():
         if data['title'] and data['vacancies'] and data['created_by'] and data['location'] and data['pay'] and data['start_time'] and data['duration'] and data['description'] and len(data.keys()) == 8:
             created_at = datetime_ref.now()
             data["created_at"] = created_at
+            applicants = []
+            data["applicants"] = applicants
 
             db.collection(u'jobs').add(data)
             # return jsonify(data)
@@ -238,35 +240,35 @@ def handleJobs():
     return jsonify(jobsDic)
 
 # getting(for a specific job) and posting applications from a business' perspective
-@app.route('/api/applications/', methods=['POST'])
-def handleApplications():
-    if request.method == 'POST':
-        data = request.get_json()
-        if data['b_uid'] and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
-            created_at = datetime_ref.now()
-            confirmation = "null"
-            data["created_at"] = created_at
-            data["confirmation"] = confirmation
+# @app.route('/api/applications/', methods=['POST'])
+# def handleApplications():
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         if data['b_uid'] and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
+#             created_at = datetime_ref.now()
+#             confirmation = "null"
+#             data["created_at"] = created_at
+#             data["confirmation"] = confirmation
 
 
-            db.collection(u'applications').add(data)
-            # return jsonify(data)
-            docs = db.collection(u'applications').where(
-                u'created_at', u'==', created_at).stream()
-            appDic = {}
-            for doc in docs:
-                appDic[doc.id] = doc.to_dict()
-            return jsonify(appDic)
-    else:
-        # docs = db.collection(u'Applications').where(
-        #     u'business_id', '==', business_id).where(u'job_id', u'==', job_id).stream()
-        # myDic = {}
-        # mylist = []
-        # for doc in docs:
-        #     mylist.append({doc.id: doc.to_dict()})
-        #     myDic['applications'] = mylist
+#             db.collection(u'applications').add(data)
+#             # return jsonify(data)
+#             docs = db.collection(u'applications').where(
+#                 u'created_at', u'==', created_at).stream()
+#             appDic = {}
+#             for doc in docs:
+#                 appDic[doc.id] = doc.to_dict()
+#             return jsonify(appDic)
+#     else:
+#         # docs = db.collection(u'Applications').where(
+#         #     u'business_id', '==', business_id).where(u'job_id', u'==', job_id).stream()
+#         # myDic = {}
+#         # mylist = []
+#         # for doc in docs:
+#         #     mylist.append({doc.id: doc.to_dict()})
+#         #     myDic['applications'] = mylist
 
-        return jsonify({"message": "message"})
+#         return jsonify({"message": "message"})
 
 
 if __name__ == '__main__':
