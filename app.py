@@ -27,12 +27,13 @@ firebase = pyrebase.initialize_app(config)
 pyreAuth = firebase.auth()
 
 
-@app.route('/')
+@app.route('/api/')
 def index():
-    return jsonify({"message": "hi"})
+    with open("endpoints.json", "r") as endpoints_file:
+        return json.load(endpoints_file)
 
 
-@app.route('/user/login', methods=['GET', 'POST'])
+@app.route('/api/user/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json(force=True)
@@ -57,7 +58,7 @@ def login():
         return jsonify({"message": "please post a user tot his endpoint"})
 
 
-@app.route('/business/login', methods=['GET', 'POST'])
+@app.route('/api/business/login', methods=['GET', 'POST'])
 def businesslogin():
     if request.method == 'POST':
         data = request.get_json(force=True)
@@ -119,14 +120,14 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
 
 
 # # # adds user
-@app.route('/user/signup', methods=['GET', 'POST'])
+@app.route('/api/user/signup', methods=['GET', 'POST'])
 def usersignup():
     # need to use dynamic information from the frontend submission
     if request.method == 'POST':
@@ -168,7 +169,7 @@ def usersignup():
 
 
 # # # adding business
-@app.route('/business/signup', methods=['GET', 'POST'])
+@app.route('/api/business/signup', methods=['GET', 'POST'])
 def businesssignup():
     #     # need to use dynamic information from the frontend submission
     if request.method == 'POST':
