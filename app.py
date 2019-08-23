@@ -210,7 +210,6 @@ def businesssignup():
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
 
-
 # fetches data from db with a where clause
 # @app.route('/', methods=['GET'])
 # def user_data():
@@ -220,6 +219,7 @@ def businesssignup():
 #     for doc in docs:
 #         print(u'{} => {}'.format(doc.id, doc.to_dict()))
 #         return jsonify(doc.id, doc.to_dict())
+
 
 @app.route('/api/jobs/', methods=['GET', 'POST'])
 def handleJobs():
