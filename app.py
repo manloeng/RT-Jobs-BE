@@ -186,7 +186,7 @@ def businesssignup():
                 password=password,
                 display_name=display_name,
             )
-    #             # then logs in
+                # then logs in
             checkauth = pyreAuth.sign_in_with_email_and_password(
                 email, password)
             print(checkauth, "<-----")
@@ -236,7 +236,9 @@ def handleJobs():
         jobsDic = {}
         jobsList = []
         for doc in docs:
-            jobsList.append({doc.id: doc.to_dict()})
+            doc_content = doc.to_dict()
+            doc_content["job_id"] = doc.id
+            jobsList.append(doc_content)
         jobsDic['jobs'] = jobsList
     return jsonify(jobsDic)
 

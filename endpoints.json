@@ -73,11 +73,13 @@
       "description": "words"
     },
     "exampleResponse": {
-      "ScRUVxZOFVeiaQor0ufz": {
-        "created_at": "Fri, 23 Aug 2019 12:10:33 GMT",
+      "job": {
+        "applicants": [],
+        "created_at": "Fri, 23 Aug 2019 15:27:06 GMT",
         "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
         "description": "some words here",
         "duration": "6 hours",
+        "job_id": "jSXZESJGCRnwCssgVqpf",
         "location": "Manchester",
         "pay": "£10",
         "start_time": "6pm",
@@ -91,19 +93,35 @@
     "exampleResponse": {
       "jobs": [
         {
-          "BCXXlxCmbVjzX5QtJIww": {
-            "created_at": "Fri, 23 Aug 2019 12:50:27 GMT",
-            "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
-            "description": "some words here",
-            "duration": "6 hours",
-            "location": "Manchester",
-            "pay": "£10",
-            "start_time": "6pm",
-            "title": "Blah",
-            "vacancies": "3"
-          }
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "created_at": "Fri, 23 Aug 2019 12:50:27 GMT",
+          "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "description": "some words here",
+          "duration": "6 hours",
+          "location": "Manchester",
+          "pay": "£10",
+          "start_time": "6pm",
+          "title": "Blah",
+          "vacancies": "3"
         }
       ]
+    }
+  },
+  "POST /api/applications": {
+    "description": "posts an application to a job and updates applicants on job record",
+    "RequestBody": {
+      "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+      "u_uid": "AwwpXhkrFXczRIhtiU17EXDYqQY2",
+      "job_id": "BCXXlxCmbVjzX5QtJIww"
+    },
+    "exampleResponse": {
+      "DzATggGaXcjwFEmpkfOg": {
+        "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+        "confirmation": "null",
+        "created_at": "Fri, 23 Aug 2019 15:08:39 GMT",
+        "job_id": "BCXXlxCmbVjzX5QtJIww",
+        "u_uid": "AwwpXhkrFXczRIhtiU17EXDYqQY2"
+      }
     }
   }
 }
