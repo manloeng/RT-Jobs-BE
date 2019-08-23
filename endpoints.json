@@ -115,7 +115,8 @@
       "job_id": "BCXXlxCmbVjzX5QtJIww"
     },
     "exampleResponse": {
-      "DzATggGaXcjwFEmpkfOg": {
+      "application": {
+        "app_id": "DzATggGaXcjwFEmpkfOg",
         "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
         "confirmation": "null",
         "created_at": "Fri, 23 Aug 2019 15:08:39 GMT",

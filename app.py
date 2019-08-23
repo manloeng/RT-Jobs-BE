@@ -261,7 +261,9 @@ def handleApplications():
                 u'created_at', u'==', created_at).stream()
             appDic = {}
             for doc in docs:
-                appDic[doc.id] = doc.to_dict()
+                doc_content = doc.to_dict()
+                appDic["application"] = doc_content
+                doc_content["app_id"] = doc.id
             return jsonify(appDic)
     else:
         # docs = db.collection(u'Applications').where(
