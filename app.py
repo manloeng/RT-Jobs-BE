@@ -6,12 +6,13 @@ from flask import jsonify, Flask, request, render_template
 import json
 import os
 from pyrebase import pyrebase
+import datetime
 # import secret
 
 app = Flask(__name__)
 
 SECRET_KEY = os.getenv("FIREBASE_API_KEY")
-
+datetime_ref = datetime.datetime
 
 # Auth -  getting user idToken
 config = {
@@ -120,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
