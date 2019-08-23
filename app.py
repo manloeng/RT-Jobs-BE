@@ -121,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -220,6 +220,33 @@ def businesssignup():
 #     for doc in docs:
 #         print(u'{} => {}'.format(doc.id, doc.to_dict()))
 #         return jsonify(doc.id, doc.to_dict())
+
+@app.route('/api/jobs/', methods=['GET', 'POST'])
+def handleJobs():
+    if request.method == 'POST':
+        data = request.get_json()
+        if data['title'] and data['vacancies'] and data['created_by'] and data['location'] and data['pay'] and data['start_time'] and data['duration'] and data['description'] and len(data.keys()) == 8:
+            created_at = datetime_ref.now()
+            data["created_at"] = created_at
+
+            db.collection(u'jobs').add(data)
+            # return jsonify(data)
+            docs = db.collection(u'jobs').where(u'created_at', u'==', created_at).where(
+                u'created_by', u'==', data['created_by']).stream()
+            jobDic = {}
+            for doc in docs:
+                jobDic[doc.id] = doc.to_dict()
+            return jsonify(jobDic)
+
+    # else:
+    #     docs = db.collection(u'Jobs').where(
+    #         u'business_id', '==', business_id).stream()
+    #     myDic = {}
+    #     mylist = []
+    #     for doc in docs:
+    #         myDic[doc.id] = doc.to_dict()
+
+    return jsonify({"message": "yay"})
 
 
 if __name__ == '__main__':
