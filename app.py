@@ -70,7 +70,13 @@ def businesslogin():
         display_name = checkauth['displayName']
         verify(id_token)
         if verify(id_token) == "business":
-            return jsonify(localId=localId, businessEmail=email, buinessName=display_name)
+            # details = {}
+            # details["email"] = email
+            # details["display_name"] = display_name
+            # details["localId"] = localId
+            # business = {}
+            # business["business"] = details
+            return jsonify({"message": "not valid"})
         return jsonify({"message": "not valid"})
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
@@ -113,7 +119,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -187,12 +193,18 @@ def businesssignup():
         # adds data into our data when user signs up and set up its own user obj
         # needs to be more accept a range of data
             doc_ref = db.collection(u'business').document(localId)
-            doc_ref.set({u'businessEmail': email,
-                         u'businessName': display_name})
+            doc_ref.set({u'email': email,
+                         u'display_name': display_name})
         except:
             # should print firebase error
             return jsonify({'messsage': "error"})
-        return jsonify(localId=localId, BusinessEmail=email, BusinessName=display_name)
+        details = {}
+        details["email"] = email
+        details["display_name"] = display_name
+        details["localId"] = localId
+        business = {}
+        business["business"] = details
+        return jsonify(business)
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
 
