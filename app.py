@@ -238,15 +238,14 @@ def handleJobs():
                 jobDic[doc.id] = doc.to_dict()
             return jsonify(jobDic)
 
-    # else:
-    #     docs = db.collection(u'Jobs').where(
-    #         u'business_id', '==', business_id).stream()
-    #     myDic = {}
-    #     mylist = []
-    #     for doc in docs:
-    #         myDic[doc.id] = doc.to_dict()
-
-    return jsonify({"message": "yay"})
+    else:
+        docs = db.collection(u'jobs').stream()
+        jobsDic = {}
+        jobsList = []
+        for doc in docs:
+            jobsList.append({doc.id: doc.to_dict()})
+        jobsDic['jobs'] = jobsList
+    return jsonify(jobsDic)
 
 
 if __name__ == '__main__':
