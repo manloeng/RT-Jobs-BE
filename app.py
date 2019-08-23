@@ -52,7 +52,6 @@ def login():
             user = {}
             user["user"] = details
             return jsonify(user)
-
         return jsonify({"message": "not valid"})
     if request.method == 'GET':
         return jsonify({"message": "please post a user tot his endpoint"})
@@ -147,13 +146,19 @@ def usersignup():
     # #             # adds data into our data when user signs up and set up its own user obj
     # #             # needs to be more accept a range of data
             doc_ref = db.collection(u'users').document(localId)
-            doc_ref.set({u'email': email, u'name': display_name,
-                         u'avatar_url': 'https://placekitten.com/474/821'})
-        except:
+            doc_ref.set({u'email': email, u'name': display_name})
+        except Exception as e:
+            print(e)
             return jsonify("an error has occured")
-        return jsonify(localId=localId, email=email, display_name=display_name)
-        if request.method == 'GET':
-            return jsonify({"message": "please post a user tot his endpoint"})
+        details = {}
+        details["email"] = email
+        details["display_name"] = display_name
+        details["localId"] = localId
+        user = {}
+        user["user"] = details
+        return jsonify(user)
+    if request.method == 'GET':
+        return jsonify({"message": "please post a user tot his endpoint"})
 
 
 # # # adding business
