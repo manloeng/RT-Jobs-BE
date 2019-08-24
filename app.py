@@ -7,9 +7,10 @@ import json
 import os
 from pyrebase import pyrebase
 import datetime
-import secret
 
 app = Flask(__name__)
+
+# SET KEYS FROM LOCAL ENVIRONMENT
 
 SECRET_KEY = os.getenv("FIREBASE_API_KEY")
 
@@ -18,9 +19,8 @@ if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
 else:
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
-datetime_ref = datetime.datetime
+# AUTH - GETTING USER IDTOKEN
 
-# Auth -  getting user idToken
 config = {
     "apiKey": SECRET_KEY,
     "authDomain": "flask-auth-84403.firebaseapp.com",
@@ -30,15 +30,14 @@ config = {
 }
 
 firebase = pyrebase.initialize_app(config)
-
 pyreAuth = firebase.auth()
 
+datetime_ref = datetime.datetime
 
 @app.route('/api/')
 def index():
     with open("endpoints.json", "r") as endpoints_file:
         return json.load(endpoints_file)
-
 
 @app.route('/api/user/login', methods=['GET', 'POST'])
 def login():
@@ -109,41 +108,18 @@ def verify(id_token):
             print('business logged in')
             return "business"
 
-
-# @app.route('/user/profile', methods=['GET', 'POST'])
-# def userprofile():
-#     email = "manloengchung@googlemail.com"
-#     user = auth.get_user_by_email(email)
-#     # print('Successfully fetched user data: {0}'.format(user.uid))
-#     return render_template('loggedIn.html')
-
-
-# @app.route('/business/profile', methods=['GET', 'POST'])
-# def businessprofile():
-#     email = "manloengchung@googlemail.com"
-#     user = auth.get_user_by_email(email)
-#     # print('Successfully fetched user data: {0}'.format(user.uid))
-#     return render_template('loggedIn.html')
-
-
-# # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+# ADMIN SDK - SETTING UP FOR ADMIN PRIVILEGES
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
 
-# # # adds user
 @app.route('/api/user/signup', methods=['GET', 'POST'])
 def usersignup():
-    # need to use dynamic information from the frontend submission
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
         password = data['password']
         display_name = data['display_name']
-        print(email)
-        print(password)
-        # could add name from req form
         try:
             # creates a new user in firebase (under the hood)
             user = auth.create_user(
@@ -156,8 +132,7 @@ def usersignup():
                 email, password)
             print(checkauth, "<-----")
             localId = checkauth['localId']
-                # adds data into our data when user signs up and set up its own user obj
-                # needs to be more accept a range of data
+                # adds user to our database
             doc_ref = db.collection(u'users').document(localId)
             doc_ref.set({u'email': email, u'name': display_name})
         except Exception as e:
@@ -174,10 +149,8 @@ def usersignup():
         return jsonify({"message": "please post a user tot his endpoint"})
 
 
-# # # adding business
 @app.route('/api/business/signup', methods=['GET', 'POST'])
 def businesssignup():
-    #     # need to use dynamic information from the frontend submission
     if request.method == 'POST':
         data = request.get_json(force=True)
         email = data['email']
@@ -197,13 +170,11 @@ def businesssignup():
                 email, password)
             print(checkauth, "<-----")
             localId = checkauth['localId']
-        # adds data into our data when user signs up and set up its own user obj
-        # needs to be more accept a range of data
+        # adds business to our database
             doc_ref = db.collection(u'business').document(localId)
             doc_ref.set({u'email': email,
                          u'display_name': display_name})
         except:
-            # should print firebase error
             return jsonify({'messsage': "error"})
         details = {}
         details["email"] = email
@@ -235,7 +206,6 @@ def handleJobs():
                 jobDic["job"] = doc_content
                 doc_content["job_id"] = doc.id
             return jsonify(jobDic)
-
     else:
         docs = db.collection(u'jobs').stream()
         jobsDic = {}
@@ -261,7 +231,6 @@ def handleJob(job_id):
         job = db.collection(u'jobs').document(job_id).delete()
         return jsonify({'message': 'deleted'}), 204
 
-# getting(for a specific job) and posting applications from a business' perspective
 @app.route('/api/applications/', methods=['GET', 'POST'])
 def handleApplications():
     if request.method == 'POST':
@@ -322,14 +291,12 @@ def handleApplication(app_id):
         doc_ref.update({
             u'confirmation': app_rej,
         })
-
         app = db.collection(u'applications').document(app_id)
         doc = app.get()
         app_return = {}
         app_dict = doc.to_dict()
         app_return['application'] = app_dict
         return jsonify(app_return)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
