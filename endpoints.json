@@ -49,14 +49,140 @@
   "POST /api/business/login": {
     "description": "serves a business on succesful login",
     "RequestBody": {
-      "display_name": "My Name",
-      "email": "test@test.co.uk"
+      "email": "test@test.co.uk",
+      "password": "password"
     },
     "exampleResponse": {
       "business": {
         "display_name": "My Name",
         "email": "test@test.co.uk",
         "localId": "lkSO3KaKqbaO9XfnhkTOYZpSdp23"
+      }
+    }
+  },
+  "POST /api/jobs": {
+    "description": "posts a job and returns the jobs if successful",
+    "RequestBody": {
+      "title": "title",
+      "vacancies": "3",
+      "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+      "location": "Manchester",
+      "pay": "£10",
+      "start_time": "6pm",
+      "duration": "6 hours",
+      "description": "words"
+    },
+    "exampleResponse": {
+      "job": {
+        "applicants": [],
+        "created_at": "Fri, 23 Aug 2019 15:27:06 GMT",
+        "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+        "description": "some words here",
+        "duration": "6 hours",
+        "job_id": "jSXZESJGCRnwCssgVqpf",
+        "location": "Manchester",
+        "pay": "£10",
+        "start_time": "6pm",
+        "title": "Blah blah",
+        "vacancies": "3"
+      }
+    }
+  },
+  "GET /api/jobs": {
+    "description": "returns a list of all jobs in an array",
+    "exampleResponse": {
+      "jobs": [
+        {
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "created_at": "Fri, 23 Aug 2019 12:50:27 GMT",
+          "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "description": "some words here",
+          "duration": "6 hours",
+          "location": "Manchester",
+          "pay": "£10",
+          "start_time": "6pm",
+          "title": "title",
+          "vacancies": "3"
+        }
+      ]
+    }
+  },
+  "GET /api/job/:job_id": {
+    "description": "returns a list of all jobs in an array",
+    "exampleResponse": {
+      "jobs": [
+        {
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "created_at": "Fri, 23 Aug 2019 12:50:27 GMT",
+          "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "description": "some words here",
+          "duration": "6 hours",
+          "location": "Manchester",
+          "pay": "£10",
+          "start_time": "6pm",
+          "title": "title",
+          "vacancies": "3"
+        }
+      ]
+    }
+  },
+  "DELETE /api/job/:job_id": {
+    "description": "deletes a job by job_id"
+  },
+  "POST /api/applications": {
+    "description": "posts an application to a job and updates applicants on job record",
+    "RequestBody": {
+      "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+      "u_uid": "AwwpXhkrFXczRIhtiU17EXDYqQY2",
+      "job_id": "BCXXlxCmbVjzX5QtJIww"
+    },
+    "exampleResponse": {
+      "application": {
+        "app_id": "DzATggGaXcjwFEmpkfOg",
+        "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+        "confirmation": "null",
+        "created_at": "Fri, 23 Aug 2019 15:08:39 GMT",
+        "job_id": "BCXXlxCmbVjzX5QtJIww",
+        "u_uid": "AwwpXhkrFXczRIhtiU17EXDYqQY2"
+      }
+    }
+  },
+  "GET /api/applications": {
+    "description": "serves an array of applications",
+    "queries": ["user_id", "job_id"],
+    "exampleResponse": {
+      "applications": [
+        {
+          "applications": "1W1xdkVqTHKhXp4EYicJ",
+          "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "confirmation": "null",
+          "created_at": "Fri, 23 Aug 2019 16:06:00 GMT",
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
+        },
+        {
+          "applications": "2VPP2tBXamfWHieY3SK0",
+          "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "confirmation": "null",
+          "created_at": "Fri, 23 Aug 2019 16:38:38 GMT",
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
+        }
+      ]
+    }
+  },
+  "POST /api/applications/:app_id": {
+    "description": "patches a job to update the confirmation field",
+    "RequestBody": {
+      "confirmation": "Approve/Reject"
+    },
+    "exampleResponse": {
+      "application": {
+        "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+        "confirmation": "Aprove",
+        "created_at": "Fri, 23 Aug 2019 16:06:00 GMT",
+        "job_id": "BCXXlxCmbVjzX5QtJIww",
+        "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
       }
     }
   }
