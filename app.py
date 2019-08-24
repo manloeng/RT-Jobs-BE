@@ -121,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -242,14 +242,18 @@ def handleJobs():
     return jsonify(jobsDic)
 
 
-@app.route('/api/job/<job_id>', methods=['GET'])
+@app.route('/api/job/<job_id>', methods=['GET', 'DELETE'])
 def handleJob(job_id):
-    job = db.collection(u'jobs').document(job_id)
-    doc = job.get()
-    job_return = {}
-    job_dict = doc.to_dict()
-    job_return['job'] = job_dict
-    return jsonify(job_return)
+    if request.method == 'GET':
+        job = db.collection(u'jobs').document(job_id)
+        doc = job.get()
+        job_return = {}
+        job_dict = doc.to_dict()
+        job_return['job'] = job_dict
+        return jsonify(job_return)
+    if request.method == 'DELETE':
+        job = db.collection(u'jobs').document(job_id).delete()
+        return jsonify({'message': 'deleted'}), 204
 
 # getting(for a specific job) and posting applications from a business' perspective
 @app.route('/api/applications/', methods=['GET', 'POST'])
