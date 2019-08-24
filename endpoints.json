@@ -101,11 +101,33 @@
           "location": "Manchester",
           "pay": "£10",
           "start_time": "6pm",
-          "title": "Blah",
+          "title": "title",
           "vacancies": "3"
         }
       ]
     }
+  },
+  "GET /api/job/:job_id": {
+    "description": "returns a list of all jobs in an array",
+    "exampleResponse": {
+      "jobs": [
+        {
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "created_at": "Fri, 23 Aug 2019 12:50:27 GMT",
+          "created_by": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "description": "some words here",
+          "duration": "6 hours",
+          "location": "Manchester",
+          "pay": "£10",
+          "start_time": "6pm",
+          "title": "title",
+          "vacancies": "3"
+        }
+      ]
+    }
+  },
+  "DELETE /api/job/:job_id": {
+    "description": "deletes a job by job_id"
   },
   "POST /api/applications": {
     "description": "posts an application to a job and updates applicants on job record",
