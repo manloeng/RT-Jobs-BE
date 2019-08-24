@@ -7,11 +7,17 @@ import json
 import os
 from pyrebase import pyrebase
 import datetime
-# import secret
+import secret
 
 app = Flask(__name__)
 
 SECRET_KEY = os.getenv("FIREBASE_API_KEY")
+
+if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+    print('GOOGLE_APPLICATION_CREDENTIALS in local environment')
+else:
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+
 datetime_ref = datetime.datetime
 
 # Auth -  getting user idToken
@@ -145,13 +151,13 @@ def usersignup():
                 password=password,
                 display_name=display_name,
             )
-    #             # then logs in
+                # then logs in
             checkauth = pyreAuth.sign_in_with_email_and_password(
                 email, password)
             print(checkauth, "<-----")
             localId = checkauth['localId']
-    # #             # adds data into our data when user signs up and set up its own user obj
-    # #             # needs to be more accept a range of data
+                # adds data into our data when user signs up and set up its own user obj
+                # needs to be more accept a range of data
             doc_ref = db.collection(u'users').document(localId)
             doc_ref.set({u'email': email, u'name': display_name})
         except Exception as e:
