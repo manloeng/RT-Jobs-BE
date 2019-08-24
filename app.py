@@ -121,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -243,7 +243,7 @@ def handleJobs():
     return jsonify(jobsDic)
 
 # getting(for a specific job) and posting applications from a business' perspective
-@app.route('/api/applications/', methods=['POST'])
+@app.route('/api/applications/', methods=['GET', 'POST'])
 def handleApplications():
     if request.method == 'POST':
         data = request.get_json()
@@ -266,14 +266,32 @@ def handleApplications():
                 doc_content["app_id"] = doc.id
             return jsonify(appDic)
     else:
-        # docs = db.collection(u'Applications').where(
-        #     u'business_id', '==', business_id).where(u'job_id', u'==', job_id).stream()
-        # myDic = {}
-        # mylist = []
-        # for doc in docs:
-        #     mylist.append({doc.id: doc.to_dict()})
-        #     myDic['applications'] = mylist
-        return jsonify({"message": "message"})
+        if request.args.get("user_id"):
+            user_id = request.args.get("user_id")
+            docs = db.collection(u'applications').where(
+                u'u_uid', '==', user_id).stream()
+            appDic = {}
+            appList = []
+            for doc in docs:
+                doc_content = doc.to_dict()
+                doc_content["applications"] = doc.id
+                appList.append(doc_content)
+            appDic['applications'] = appList
+            return jsonify(appDic)
+
+        if request.args.get("job_id"):
+            job_id = request.args.get("job_id")
+            docs = db.collection(u'applications').where(
+                u'job_id', '==', job_id).stream()
+            appDic = {}
+            appList = []
+            for doc in docs:
+                doc_content = doc.to_dict()
+                doc_content["applications"] = doc.id
+                appList.append(doc_content)
+            appDic['applications'] = appList
+            return jsonify(appDic)
+        return jsonify({"message": "please provide a valid query"})
 
 
 if __name__ == '__main__':
