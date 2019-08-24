@@ -121,7 +121,7 @@ def verify(id_token):
 
 
 # # # Admin SDK - setting up for admin privileges
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
 
 default_app = firebase_admin.initialize_app()
 db = firestore.client()
@@ -186,7 +186,7 @@ def businesssignup():
                 password=password,
                 display_name=display_name,
             )
-                # then logs in
+            # then logs in
             checkauth = pyreAuth.sign_in_with_email_and_password(
                 email, password)
             print(checkauth, "<-----")
@@ -240,6 +240,16 @@ def handleJobs():
             jobsList.append(doc_content)
         jobsDic['jobs'] = jobsList
     return jsonify(jobsDic)
+
+
+@app.route('/api/job/<job_id>', methods=['GET'])
+def handleJob(job_id):
+    job = db.collection(u'jobs').document(job_id)
+    doc = job.get()
+    job_return = {}
+    job_dict = doc.to_dict()
+    job_return['job'] = job_dict
+    return jsonify(job_return)
 
 # getting(for a specific job) and posting applications from a business' perspective
 @app.route('/api/applications/', methods=['GET', 'POST'])

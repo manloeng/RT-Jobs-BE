@@ -148,5 +148,20 @@
         }
       ]
     }
+  },
+  "POST /api/applications/:app_id": {
+    "description": "patches a job to update the confirmation field",
+    "RequestBody": {
+      "confirmation": "Approve/Reject"
+    },
+    "exampleResponse": {
+      "application": {
+        "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+        "confirmation": "Aprove",
+        "created_at": "Fri, 23 Aug 2019 16:06:00 GMT",
+        "job_id": "BCXXlxCmbVjzX5QtJIww",
+        "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
+      }
+    }
   }
 }
