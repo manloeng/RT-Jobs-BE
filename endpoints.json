@@ -124,5 +124,29 @@
         "u_uid": "AwwpXhkrFXczRIhtiU17EXDYqQY2"
       }
     }
+  },
+  "GET /api/applications": {
+    "description": "serves an array of applications",
+    "queries": ["user_id", "job_id"],
+    "exampleResponse": {
+      "applications": [
+        {
+          "applications": "1W1xdkVqTHKhXp4EYicJ",
+          "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "confirmation": "null",
+          "created_at": "Fri, 23 Aug 2019 16:06:00 GMT",
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
+        },
+        {
+          "applications": "2VPP2tBXamfWHieY3SK0",
+          "b_uid": "W3Do6GvDOfa3Kqnmmaf9NLlxp6g1",
+          "confirmation": "null",
+          "created_at": "Fri, 23 Aug 2019 16:38:38 GMT",
+          "job_id": "BCXXlxCmbVjzX5QtJIww",
+          "u_uid": "9gyBtmPzNhbHgd41pUwH5yMsSwT2"
+        }
+      ]
+    }
   }
 }

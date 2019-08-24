@@ -221,7 +221,6 @@ def handleJobs():
             data["applicants"] = applicants
 
             db.collection(u'jobs').add(data)
-            # return jsonify(data)
             docs = db.collection(u'jobs').where(u'created_at', u'==', created_at).where(
                 u'created_by', u'==', data['created_by']).stream()
             jobDic = {}
@@ -292,6 +291,24 @@ def handleApplications():
             appDic['applications'] = appList
             return jsonify(appDic)
         return jsonify({"message": "please provide a valid query"})
+
+
+@app.route('/api/applications/<app_id>', methods=['PATCH'])
+def handleApplication(app_id):
+    data = request.get_json()
+    if data['confirmation']:
+        app_rej = data['confirmation']
+        doc_ref = db.collection(u'applications').document(app_id)
+        doc_ref.update({
+            u'confirmation': app_rej,
+        })
+
+        app = db.collection(u'applications').document(app_id)
+        doc = app.get()
+        app_return = {}
+        app_dict = doc.to_dict()
+        app_return['application'] = app_dict
+        return jsonify(app_return)
 
 
 if __name__ == '__main__':
