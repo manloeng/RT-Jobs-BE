@@ -1,14 +1,19 @@
+import requests
+from requests.packages import urllib3
+print(urllib3.__file__)
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
-from flask import jsonify, Flask, request, render_template
+from flask import jsonify, Flask, request, render_template, abort
 import json
 import os
 from pyrebase import pyrebase
 import datetime
 
+
 app = Flask(__name__)
+
 
 # SET KEYS FROM LOCAL ENVIRONMENT
 
@@ -61,7 +66,7 @@ def login():
             return jsonify(user)
         return jsonify({"message": "not valid"})
     if request.method == 'GET':
-        return jsonify({"message": "please post a user tot his endpoint"})
+        return jsonify({"message": "please post a user to this endpoint"})
 
 
 @app.route('/api/business/login', methods=['GET', 'POST'])
@@ -146,7 +151,7 @@ def usersignup():
         user["user"] = details
         return jsonify(user)
     if request.method == 'GET':
-        return jsonify({"message": "please post a user tot his endpoint"})
+        return jsonify({"message": "please post a user to this endpoint"})
 
 
 @app.route('/api/business/signup', methods=['GET', 'POST'])
@@ -191,7 +196,8 @@ def businesssignup():
 def handleJobs():
     if request.method == 'POST':
         data = request.get_json()
-        if data['title'] and data['vacancies'] and data['created_by'] and data['location'] and data['pay'] and data['start_time'] and data['duration'] and data['description'] and len(data.keys()) == 8:
+        if set(('title', 'vacancies', 'created_by','location','pay','start_time','duration','description')) == set(data):
+        #if data['title'] and data['vacancies'] and data['created_by'] and data['location'] and data['pay'] and data['start_time'] and data['duration'] and data['description'] and len(data.keys()) == 8:
             created_at = datetime_ref.now()
             data["created_at"] = created_at
             applicants = []
@@ -206,6 +212,8 @@ def handleJobs():
                 jobDic["job"] = doc_content
                 doc_content["job_id"] = doc.id
             return jsonify(jobDic)
+        else:
+            abort(400, "Invalid/Missing JSON body keys")
     else:
         docs = db.collection(u'jobs').stream()
         jobsDic = {}
@@ -226,16 +234,22 @@ def handleJob(job_id):
         job_return = {}
         job_dict = doc.to_dict()
         job_return['job'] = job_dict
+        if job_dict == None:
+            abort(404, "job not found")
         return jsonify(job_return)
     if request.method == 'DELETE':
-        job = db.collection(u'jobs').document(job_id).delete()
+        job = db.collection(u'jobs').document(job_id)
+        if job.get().to_dict() == None:
+            abort(404, "job not found")
+        job.delete()
         return jsonify({'message': 'deleted'}), 204
 
 @app.route('/api/applications/', methods=['GET', 'POST'])
 def handleApplications():
     if request.method == 'POST':
         data = request.get_json()
-        if data['b_uid'] and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
+        if set(('b_uid', 'u_uid', 'job_id')) == set(data):
+        # if bool(data['b_uid']) and data['u_uid'] and data['job_id'] and len(data.keys()) == 3:
             created_at = datetime_ref.now()
             confirmation = "null"
             data["created_at"] = created_at
@@ -253,6 +267,9 @@ def handleApplications():
                 appDic["application"] = doc_content
                 doc_content["app_id"] = doc.id
             return jsonify(appDic)
+        else:
+             abort(400, "Invalid/Missing JSON body keys")
+
     else:
         if request.args.get("user_id"):
             user_id = request.args.get("user_id")
@@ -264,6 +281,8 @@ def handleApplications():
                 doc_content = doc.to_dict()
                 doc_content["applications"] = doc.id
                 appList.append(doc_content)
+            if len(appList) == 0:
+                abort(404,"user not found by id")
             appDic['applications'] = appList
             return jsonify(appDic)
 
@@ -277,6 +296,8 @@ def handleApplications():
                 doc_content = doc.to_dict()
                 doc_content["applications"] = doc.id
                 appList.append(doc_content)
+            if len(appList) == 0:
+                abort(404, "job not found by id")
             appDic['applications'] = appList
             return jsonify(appDic)
         return jsonify({"message": "please provide a valid query"})
@@ -285,18 +306,21 @@ def handleApplications():
 @app.route('/api/applications/<app_id>', methods=['PATCH'])
 def handleApplication(app_id):
     data = request.get_json()
-    if data['confirmation']:
+    app = db.collection(u'applications').document(app_id)
+    doc = app.get()
+    if doc.to_dict() == None:
+        abort(404,"application not found")
+    if 'confirmation' in data:
         app_rej = data['confirmation']
-        doc_ref = db.collection(u'applications').document(app_id)
-        doc_ref.update({
+        app.update({
             u'confirmation': app_rej,
         })
-        app = db.collection(u'applications').document(app_id)
-        doc = app.get()
         app_return = {}
-        app_dict = doc.to_dict()
+        app_dict = app.get().to_dict()
         app_return['application'] = app_dict
         return jsonify(app_return)
+    else: abort(400, "missing confirmation")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
