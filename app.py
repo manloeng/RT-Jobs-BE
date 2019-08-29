@@ -14,15 +14,24 @@ import datetime
 
 app = Flask(__name__)
 
-
-# SET KEYS FROM LOCAL ENVIRONMENT
-
-SECRET_KEY = os.getenv("FIREBASE_API_KEY")
-
-if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
-    print('GOOGLE_APPLICATION_CREDENTIALS in local environment')
+if 'TEST' in os.environ:
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "test-private-key.json"
 else:
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+
+# SET KEYS FROM LOCAL ENVIRONMENT
+SECRET_KEY = os.getenv("FIREBASE_API_KEY")
+    
+
+
+# os.environ["FIREBASE_API_KEY"]
+# SECRET_KEY = os.getenv("FIREBASE_API_KEY")
+
+# if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+#     print('GOOGLE_APPLICATION_CREDENTIALS in local environment')
+# else:
+#     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "firebase-private-key.json"
+
 
 # AUTH - GETTING USER IDTOKEN
 
@@ -33,8 +42,17 @@ config = {
     "storageBucket": "flask-auth-84403.appspot.com",
     "projectId": "flask-auth-84403",
 }
+configTest = {
+    "apiKey": SECRET_KEY,
+    "authDomain": "experiment-8e12e.firebaseapp.com",
+    "databaseURL": "https://experiment-8e12e.firebaseio.com/",
+    "storageBucket": "experiment-8e12e.appspot.com",
+    "projectId": "experiment-8e12e",
+}
+activeConfig = configTest if 'TEST' in os.environ else config
 
-firebase = pyrebase.initialize_app(config)
+
+firebase = pyrebase.initialize_app(activeConfig)
 pyreAuth = firebase.auth()
 
 datetime_ref = datetime.datetime
