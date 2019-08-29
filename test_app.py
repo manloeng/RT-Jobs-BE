@@ -1,6 +1,6 @@
 import os
 os.environ["TEST"] = "please god just work"
-TOPRINT = os.environ.get('TEST')
+TOPRINT = os.environ.get('TEST')  
 
 from app import app
 import unittest
@@ -26,13 +26,13 @@ class TestCase(unittest.TestCase):
         actual = json.loads(result.get_data())
         assert expected == actual
 
-    def test_single_job(self):
+    def test_applications(self):
         result = self.app.get('/api/applications/?user_id=user101')
         expected = testDic["userapp"]
         actual = json.loads(result.get_data())
         assert expected == actual
 
-    def test_single_job(self):
+    def test_applications(self):
         result = self.app.get('/api/applications/?job_id=ONvUyou4hqYA4LzJ8OtB')
         expected = testDic["jobsapp"]
         actual = json.loads(result.get_data())
